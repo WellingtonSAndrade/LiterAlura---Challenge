@@ -1,9 +1,28 @@
 package br.com.alura.literalurachallengejava.principal;
 
+import br.com.alura.literalurachallengejava.dto.ApiResponseDTO;
+import br.com.alura.literalurachallengejava.model.Livro;
+import br.com.alura.literalurachallengejava.service.ConsumoApi;
+import br.com.alura.literalurachallengejava.service.ConverteDados;
+import br.com.alura.literalurachallengejava.service.LivroServico;
+
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Principal {
+    private ConsumoApi consumo =  new ConsumoApi();
+    private ConverteDados converte = new ConverteDados();
+    private LivroServico servico;
+
+    public Principal(LivroServico servico) {
+        this.servico = servico;
+    }
+
+    public Principal() {
+
+    }
+
+
     public void exibeMenu() {
         Scanner sc = new Scanner(System.in);
 
@@ -27,12 +46,13 @@ public class Principal {
             switch (opc) {
                 case "1":
                     System.out.println("Nome do livro: ");
-                    var livro = sc.nextLine();
-                    buscaLivro(livro);
+                    var nomeLivro = sc.nextLine();
+                    buscaLivro(nomeLivro);
+                    sc.nextLine();
                     break;
                 case "2":
-                    System.out.println("Lista todos os livros");
                     listaLivros();
+                    sc.nextLine();
                     break;
                 case "3":
                     System.out.println("Lista todos os autores");
@@ -73,8 +93,15 @@ public class Principal {
     }
 
     private void listaLivros() {
+        servico.buscaLivros();
     }
 
-    private void buscaLivro(String livro) {
+    private void buscaLivro(String nomeLivro) {
+        var endereco = "https://gutendex.com/books/?search=" + nomeLivro.replace(" ", "%20");
+        var response = converte.obterDados(consumo.obterDados(endereco), ApiResponseDTO.class);
+        var livro = response.results().stream()
+                .map(Livro::new)
+                .toList().get(0);
+        servico.salvaLivro(livro);
     }
 }
