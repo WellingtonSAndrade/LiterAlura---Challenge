@@ -2,6 +2,7 @@ package br.com.alura.literalurachallengejava.principal;
 
 import br.com.alura.literalurachallengejava.dto.ApiResponseDTO;
 import br.com.alura.literalurachallengejava.model.Livro;
+import br.com.alura.literalurachallengejava.service.AutorServico;
 import br.com.alura.literalurachallengejava.service.ConsumoApi;
 import br.com.alura.literalurachallengejava.service.ConverteDados;
 import br.com.alura.literalurachallengejava.service.LivroServico;
@@ -12,16 +13,13 @@ import java.util.Scanner;
 public class Principal {
     private ConsumoApi consumo =  new ConsumoApi();
     private ConverteDados converte = new ConverteDados();
-    private LivroServico servico;
+    private LivroServico livroServico;
+    private AutorServico autorServico;
 
-    public Principal(LivroServico servico) {
-        this.servico = servico;
+    public Principal(LivroServico livroServico, AutorServico autorServico) {
+        this.livroServico = livroServico;
+        this.autorServico = autorServico;
     }
-
-    public Principal() {
-
-    }
-
 
     public void exibeMenu() {
         Scanner sc = new Scanner(System.in);
@@ -48,11 +46,9 @@ public class Principal {
                     System.out.println("Nome do livro: ");
                     var nomeLivro = sc.nextLine();
                     buscaLivro(nomeLivro);
-                    sc.nextLine();
                     break;
                 case "2":
                     listaLivros();
-                    sc.nextLine();
                     break;
                 case "3":
                     System.out.println("Lista todos os autores");
@@ -77,7 +73,6 @@ public class Principal {
                 default:
                     System.out.println("Opção invalida: " + opc);
                     System.out.println("Pressione ENTER para continuar");
-                    sc.nextLine();
                     break;
             }
         }
@@ -87,13 +82,15 @@ public class Principal {
     }
 
     private void listaAutoresVivos(int ano) {
+        autorServico.buscarAutoresVivos(ano);
     }
 
     private void listaAutores() {
+        autorServico.buscaAutores();
     }
 
     private void listaLivros() {
-        servico.buscaLivros();
+        livroServico.buscaLivros();
     }
 
     private void buscaLivro(String nomeLivro) {
@@ -102,6 +99,6 @@ public class Principal {
         var livro = response.results().stream()
                 .map(Livro::new)
                 .toList().get(0);
-        servico.salvaLivro(livro);
+        livroServico.salvaLivro(livro);
     }
 }

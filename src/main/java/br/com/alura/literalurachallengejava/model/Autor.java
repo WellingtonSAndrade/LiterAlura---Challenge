@@ -3,6 +3,7 @@ package br.com.alura.literalurachallengejava.model;
 import br.com.alura.literalurachallengejava.dto.AutorDTO;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,8 @@ public class Autor {
     private String nome;
     private Integer anoNascimento;
     private Integer anoFalecimento;
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Livro> livros =  new ArrayList<>();
 
     public Autor(){}
 
@@ -53,5 +56,25 @@ public class Autor {
 
     public void setAnoFalecimento(Integer anoFalecimento) {
         this.anoFalecimento = anoFalecimento;
+    }
+
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
+    }
+
+    @Override
+    public String toString() {
+        return """
+               ----------Autor----------
+               Nome= %s
+               Ano de nascimento= %s
+               Ano de falecimento= %s
+               Livros= %s
+               -------------------------
+               """.formatted(nome, anoNascimento, anoFalecimento, livros.stream().map(Livro::getTitulo).toList());
     }
 }
