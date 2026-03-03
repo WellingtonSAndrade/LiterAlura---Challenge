@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface AutorRepository extends JpaRepository<Autor, Integer> {
+public interface AutorRepositorio extends JpaRepository<Autor, Integer> {
 
     @Query("""
             SELECT a FROM Autor a

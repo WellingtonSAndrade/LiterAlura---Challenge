@@ -1,15 +1,15 @@
 package br.com.alura.literalurachallengejava.service;
 
-import br.com.alura.literalurachallengejava.repository.AutorRepository;
+import br.com.alura.literalurachallengejava.repository.AutorRepositorio;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AutorServico {
 
-    private final AutorRepository autorRepository;
+    private final AutorRepositorio autorRepository;
 
-    public AutorServico(AutorRepository autorRepository) {
-        this.autorRepository = autorRepository;
+    public AutorServico(AutorRepositorio autorRepositorio) {
+        this.autorRepository = autorRepositorio;
     }
 
     public void buscaAutores() {

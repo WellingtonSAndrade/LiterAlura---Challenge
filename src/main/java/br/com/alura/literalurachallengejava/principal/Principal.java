@@ -79,6 +79,7 @@ public class Principal {
     }
 
     private void buscaLivroPorIdioma(String idioma) {
+        livroServico.buscaLivrosPorIdioma(idioma);
     }
 
     private void listaAutoresVivos(int ano) {
